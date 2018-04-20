@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="js/pictailor_dev.js"></script>
+	<title></title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: sans-serif;
+		}	
+
+		body {
+			background-color: #f6f7f8;
+		}
+
+		.wrapper {
+			position: relative;
+			margin: 0 auto;
+			width: 1200px;
+			background-color: #fff;
+		}
+
+		.part {
+			position: relative;
+			padding-top: 40px;
+			width: 100%;
+		}
+		.part h1 {
+			text-align: center;
+		}
+
+		.part#img_prepare {
+			padding-bottom: 120px;
+		}
+
+		.slots {
+			text-align: center;
+		}
+
+		.img-slot {
+			position: relative;
+			display: inline-block;
+			vertical-align: top;
+			width: 200px;
+			height: 200px;
+			background-image: url(assets/tile.png);
+			border: 1px solid #ccc;
+		}
+		.img-place {
+		    display: block;
+		    position: absolute;
+		    margin: auto;
+		    top: 0;
+		    left: 0;
+		    right: 0;
+		    bottom: 0;
+		}
+		.img-place-vertically {
+			height: 100%;
+		}
+		.img-place-horizontally {
+			width: 100%;
+		}
+
+		.img-canvas {
+			position: absolute;
+			top: 0;
+			left: 0;
+			transform: scale(0.5,0.5);
+			transform-origin: 0 0;
+			z-index: 999;
+		}
+
+
+		.file-upload-box {
+			position: relative;
+			width: 100%;
+			height: 30px;
+			line-height: 30px;
+			background-color: #fff;
+			border: 1px solid #000;
+			z-index: 9;
+			cursor: pointer;
+		}
+		.input-upload {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			outline: none;
+			border: none;
+			opacity: 0;
+			cursor: pointer;
+		}
+
+		.hide {
+			display: none;
+		}
+
+
+
+		.cut-action-box {
+			position: absolute;
+			width: 100%;
+			bottom: -80px;
+		}
+		.cut-levels {
+			position: relative;
+			margin-bottom: 10px;
+			width: 100%;
+			text-align: center;
+			font-size: 0;
+		}
+		.cut-levels .cut-level {
+			display: inline-block;
+			vertical-align: top;
+			width: 30%;
+			height: 30px;
+			font-size: 16px;
+			line-height: 30px;
+			border: 1px solid #333;
+			border-radius: 4px;
+			background-color: #fff;
+			cursor: pointer;
+		}
+		.cut-levels .cut-level.selected {
+			color: #fff;
+			background-color: #000;
+		}
+
+		.button-cut {
+			width: 90%;
+			height: 30px;
+			font-size: 16px;
+			border: 1px solid #333;
+			border-radius: 4px;
+			background-color: #fff;
+			cursor: pointer;
+		}
+
+
+		#btnComposite {
+			position: relative;
+			margin: 0 auto;
+			width: 200px;
+			height: 40px;
+			color: #fff;
+			font-size: 20px;
+			text-align: center;
+			line-height: 40px;
+			background-color: #000;
+
+		}
+		#compositeCanvas {
+			display: block;
+			position: relative;
+			margin: 0 auto;
+			width: 800px;
+			border: 1px solid #aaa;
+			background-image: url(assets/tile_dark.png);
+			transform: scale(0.5, 0.5);
+		}
+
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+
+		<div class="part">
+			<h1>商品图片处理</h1>
+		</div>
+
+		<div class="part" id="img_prepare">
+			<div class="slots">
+
+				<!-- slot 0 -->
+				<div class="img-slot" id="img_0">
+					<canvas width="400" height="400" class="img-canvas hide"></canvas>
+					<div class="file-upload-box"><input type="file" class="input-upload">上传图片</div>
+					<div class="cut-action-box">
+						<div class="cut-levels">
+							<div class="cut-level selected">1</div>
+							<div class="cut-level">2</div>
+							<div class="cut-level">3</div>
+						</div>	
+						<button class="button-cut cut-picture">cut</button>
+					</div>
+				</div>
+
+				<!-- slot 1 -->
+				<div class="img-slot" id="img_1">
+					<canvas width="400" height="400" class="img-canvas hide"></canvas>
+					<div class="file-upload-box"><input type="file" class="input-upload">上传图片</div>
+					<div class="cut-action-box">
+						<div class="cut-levels">
+							<div class="cut-level selected">1</div>
+							<div class="cut-level">2</div>
+							<div class="cut-level">3</div>
+						</div>	
+						<button class="button-cut cut-picture">cut</button>
+					</div>
+				</div>
+
+				<!-- slot 2 -->
+				<div class="img-slot" id="img_2">
+					<canvas width="400" height="400" class="img-canvas hide"></canvas>
+					<div class="file-upload-box"><input type="file" class="input-upload">上传图片</div>
+					<div class="cut-action-box">
+						<div class="cut-levels">
+							<div class="cut-level selected">1</div>
+							<div class="cut-level">2</div>
+							<div class="cut-level">3</div>
+						</div>	
+						<button class="button-cut cut-picture">cut</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="part">
+			<div id="btnComposite">Composite</div>
+			<canvas width="800" height="400" id="compositeCanvas"></canvas>
+		</div>
+
+	</div>
+
+	<script src="js/page.js"></script>
+</body>
+</html>
